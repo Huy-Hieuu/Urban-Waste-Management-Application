@@ -22,13 +22,13 @@ export const OptimizerController = {
 
         let Parent = []
         let Data = [];
-        let start = 0;
+        let start = -1;
 
         for (let point in MCPs)
         {
             let location = point
             let num = parseInt(location.slice(5));
-            if (MCPs[point].isAvailable === true && start === 0) start = num;
+            if (MCPs[point].isAvailable === true && start === -1) start = num;
             PointsInfo.push({ point: MCPs[point], minDist: inf, index: num, namePoint: point})
         }
 
@@ -46,32 +46,34 @@ export const OptimizerController = {
             {
                 let row = PointsInfo[idx].index;
                 if(PointsInfo[idx].point.isAvailable === false) {
-                    idx++;
+                    // idx++;
                     continue;
                 }
                 let minVal = inf;
                 let minIdx = 0;
-                for(let col = 0; col < distance[row].length; col++)
+                for(let col = 0; col < row + 1; col++)
                 {
+                    if(PointsInfo[col].point.isAvailable === false) continue;
                     if(distance[row][col] !== 0 && minVal > distance[row][col])
                     {
-                        console.log("minVal: ", minVal, distance[row][col])
+
                         minVal = distance[row][col];
                         minIdx = col;
                     }
                 }
+                console.log("minVal: ", minVal)
                 console.log("minIdx: ", minIdx);
                 arrayBottleNeck[minIdx].push([minVal, row])
             }
             console.log(arrayBottleNeck);
             arrayBottleNeck.forEach((subArray, index) => {
                 subArray.sort((a,b) => a[0] - b[0])
-                if(subArray.length >= 3) bottleNeckIdx.push(index)
+                if(subArray.length >= 2) bottleNeckIdx.push(index)
             })
             console.log("---------")
             console.log(arrayBottleNeck);
-            console.log(bottleNeckIdx);
-            modArrayBottleNeck = arrayBottleNeck.map(subarray => subarray.slice(0, 2))
+            console.log("bottleNeckIndex:",bottleNeckIdx);
+            modArrayBottleNeck = arrayBottleNeck.map(subarray => subarray.slice(0, 1))
             console.log("mod: ", modArrayBottleNeck);
         }
 
@@ -109,7 +111,6 @@ export const OptimizerController = {
                             {
                                 console.log("test")
                                 console.log(modArrayBottleNeck[curPoint.index])
-
                             }
                             else return;
                         }
@@ -121,18 +122,20 @@ export const OptimizerController = {
                     }
                 })
             }
-            let begin = 0;
+            let begin = -1;
             let finish = 0;
             let count = new Array(Parent.length).fill(0);
             Parent.forEach((value, index) => {
+                console.log(index, value)
                 count[value]++;
                 count[index]++;
             })
             count[start]--;
             console.log("--------------------")
             count.forEach((node, index) => {
+                console.log('count: ', index, node)
                 if(index === upperbound) return;
-                if (node === 1 && begin === 0) begin = index;
+                if (node === 1 && begin === -1) begin = index;
                 else if (node === 1) finish = index;
                 else if (node !== 1 && node > 0) {
                     Data.push(index);
