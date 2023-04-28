@@ -1,0 +1,18 @@
+.rounded-card{
+    padding: 1.5em .5em .5em;
+    border-radius: 2em;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.form-login{
+    min-height: 3.5rem;
+}
+
+.bg-login {
+    background-image: url("./bg.jpg");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
