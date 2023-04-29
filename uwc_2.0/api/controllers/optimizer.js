@@ -2,7 +2,9 @@ import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 
 
 export const OptimizerController = {
+
     Optimizer: (req, res) => {
+
         const inf = 10000;
         const rootDis = [[2500, 1200, 1500, 2100, 2100, 3200], [2100, 2900, 3600, 2500, 1400, 3700]]
         const distance = [
@@ -32,8 +34,31 @@ export const OptimizerController = {
             PointsInfo.push({ point: MCPs[point], minDist: inf, index: num, namePoint: point})
         }
 
-        const isEqual = (arr1, arr2) => {
-            return arr1[0] === arr2[0] && arr1[1] === arr2[1];
+        const minPath = (start, end) => {
+            PointsInfo[start].minDist = 0;
+            Parent[PointsInfo[start].index] = 0
+            MCPsQueue.enqueue(PointsInfo[start]);
+
+            while (!MCPsQueue.isEmpty()) {
+                const curPoint = MCPsQueue.pop();
+                if (curPoint.minDist > PointsInfo[curPoint.index].minDist) continue;
+                PointsInfo.forEach((adjPoint) => {
+                    const gap = distance[curPoint.index][adjPoint.index];
+
+                    if (gap === 0) return;
+
+                    if (adjPoint.minDist > curPoint.minDist + gap) {
+                        adjPoint.minDist = curPoint.minDist + gap;
+                        MCPsQueue.enqueue(adjPoint);
+                        Parent[adjPoint.index] = curPoint.index;
+                    }
+                })
+            }
+            Data.push(PointsInfo[end].namePoint)
+            while (end != start) {
+                Data.push(PointsInfo[Parent[end]].namePoint);
+                end = Parent[end];
+            }
         }
 
                 //find bottle neck point => O(n^2)
@@ -154,35 +179,10 @@ export const OptimizerController = {
         FindBottleNeck();
         minSpanning(start);
         return res.status(200).json(Data);
+
+
+
     }
-
-    // const minPath = (start, end) => {
-    //     PointsInfo[start].minDist = 0;
-    //     Parent[PointsInfo[start].index] = 0
-    //     MCPsQueue.enqueue(PointsInfo[start]);
-
-    //     while (!MCPsQueue.isEmpty()) {
-    //         const curPoint = MCPsQueue.pop();
-    //         if (curPoint.minDist > PointsInfo[curPoint.index].minDist) continue;
-    //         PointsInfo.forEach((adjPoint) => {
-    //             const gap = distance[curPoint.index][adjPoint.index];
-
-    //             if (gap === 0) return;
-
-    //             if (adjPoint.minDist > curPoint.minDist + gap) {
-    //                 adjPoint.minDist = curPoint.minDist + gap;
-    //                 MCPsQueue.enqueue(adjPoint);
-    //                 Parent[adjPoint.index] = curPoint.index;
-    //             }
-    //         })
-    //     }
-    //     Data.push(PointsInfo[end].namePoint)
-    //     while (end != start) {
-    //         Data.push(PointsInfo[Parent[end]].namePoint);
-    //         end = Parent[end];
-    //     }
-    // }
-
 }
 
 
