@@ -7,16 +7,25 @@ const getMyVehicle = () => {
                 data: [
                     VehicleModal.create({
                         capacity: 50,
+                        driver_name: 'Tien Phat',
                         load: 0.0,
                         type: 'Truck',
                     }),
                     VehicleModal.create({
                         capacity: 40,
+                        driver_name: 'Nguyen Tuan',
                         load: 0.4,
                         type: 'Truck',
                     }),
                     VehicleModal.create({
                         capacity: 70,
+                        driver_name: 'Huy Hieu',
+                        load: 0.8,
+                        type: 'Troller',
+                    }),
+                    VehicleModal.create({
+                        capacity: 70,
+                        driver_name: 'Hoang Kiet',
                         load: 0.8,
                         type: 'Troller',
                     }),

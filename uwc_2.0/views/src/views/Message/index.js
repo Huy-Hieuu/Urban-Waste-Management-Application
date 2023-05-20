@@ -2,7 +2,7 @@ import { ChatEngine, ChatFeed, ChatList } from 'react-chat-engine';
 import './msg.css';
 // import ChatList from './components/ChatList';
 
-const projectID = '2ddf57c8-852d-4a09-a337-14fb01d1458a';
+const projectID = 'e766b518-e37f-44cf-bf2d-bb685a846a43';
 
 const App = () => {
   const userName = localStorage.getItem('username');
